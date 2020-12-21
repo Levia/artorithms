@@ -120,7 +120,6 @@ function randomImage() {
     fill(randomColor(), randomColor(), randomColor());
     rect(i, 0, 10, height);
   }
-
 }
 
 function randomColor() {
