@@ -3,6 +3,7 @@ let canvasHeight = 720;
 let wavesDistance = 45;
 let pointsDistance = 10;
 let peaksNormalizer = 100;
+let minWavesDistance = 5;
 let chunk = 50;
 let wavesurfer = WaveSurfer.create({
   container: 'body',
@@ -65,13 +66,21 @@ function drawPeaks(_peaks, iteration) {
 
   for(let i = 0; i < _peaks.length; i++) {
     stroke(255);
-    strokeWeight(2);
+    strokeWeight(1);
     let newPoint = {
       x: prevPoint.x + pointsDistance,
-      y: Math.abs(_peaks[i] * peaksNormalizer) + iterationSpace
+      y: maxPeakValue(_peaks[i], iteration)
     };
 
     line(prevPoint.x, prevPoint.y, newPoint.x, newPoint.y);
     prevPoint = newPoint;
   }
+}
+
+function maxPeakValue(peak, iteration) {
+  let normalizedPeak = Math.abs(peak * peaksNormalizer) + iteration * wavesDistance;
+  let nextWaveStart = (iteration + 1) * wavesDistance;
+  let iterationBound = nextWaveStart - minWavesDistance;
+
+  return normalizedPeak > iterationBound ? iterationBound : normalizedPeak
 }
